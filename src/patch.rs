@@ -11,6 +11,7 @@ use crate::{Contains, OverlayError, SolidPatch};
 /// assert!(Patch::new(10, &[][..]).is_err());
 /// assert!(Patch::new(10, &[0,1,2,3,4,5,6,7,8,9][3..3]).is_err());
 /// ```
+#[derive(Clone)]
 pub struct Patch {
     offset: u64,
     content: Vec<u8>,

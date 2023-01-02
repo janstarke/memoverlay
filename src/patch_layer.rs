@@ -2,6 +2,7 @@ use std::collections::BTreeSet;
 
 use crate::{Patch, Contains, PatchSearchResult};
 
+#[derive(Clone)]
 pub struct PatchLayer {
     patches: BTreeSet<Patch>
 }

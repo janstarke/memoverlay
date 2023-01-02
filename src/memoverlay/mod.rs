@@ -3,10 +3,12 @@ use std::io::{Error, ErrorKind, Read, Result, Seek, SeekFrom, Write};
 mod read;
 mod seek;
 mod write;
+mod display;
 
 pub use read::*;
 pub use seek::*;
 pub use write::*;
+pub use display::*;
 
 use crate::{Patch, PatchLayer};
 
@@ -24,6 +26,7 @@ use crate::{Patch, PatchLayer};
 /// +---------------------------------------------------------------------------------------------------------+
 /// +---------------------------------------------------------------------------------------------------------+
 /// ```
+#[derive(Clone)]
 pub struct MemOverlay<R: Read + Seek> {
     #[allow(dead_code)]
     base: R,
