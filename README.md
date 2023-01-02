@@ -1,5 +1,6 @@
 # memoverlay
 Puts a writable layer of bytes over some byte stream
+
 # memoverlay
 
 
@@ -8,10 +9,10 @@ Puts a writable layer of bytes over some byte stream
 |    chunk 0      |  chunk 1   |    chunk 2      |   3   |       chunk 4        |   5   |     chunk 6     |
 +-----------------+------------+-----------------+-------+----------------------+-------+-----------------+
 
-                            +-----------------+       +----------------------+
-                            +-----------------+       +----------------------+
-                +-------------------+                           +---------------------+
-                +-------------------+                           +---------------------+
+                               +-----------------+       +----------------------+
+                               +-----------------+       +----------------------+
+                  +-------------------+                           +---------------------+
+                  +-------------------+                           +---------------------+
 +---------------------------------------------------------------------------------------------------------+
 +---------------------------------------------------------------------------------------------------------+
 ```
@@ -34,9 +35,14 @@ overlay.seek(SeekFrom::Start(0)).unwrap();
 assert_eq!(message2, "hello, peter!");
 
 overlay.add_bytes_at(1, "a".as_bytes()).unwrap();
-
 let mut message3 = String::new();
 let _ = overlay.read_to_string(&mut message3).unwrap();
+overlay.seek(SeekFrom::Start(0)).unwrap();
 assert_eq!(message3, "hallo, peter!");
 
-assert_eq!(message1, "hello, world!");
+overlay.add_bytes_at(1, "o".as_bytes()).unwrap();
+overlay.add_bytes_at(5, "w".as_bytes()).unwrap();
+let mut message4 = String::new();
+let _ = overlay.read_to_string(&mut message4).unwrap();
+assert_eq!(message4, "hollow peter!");
+```

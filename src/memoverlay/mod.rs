@@ -144,14 +144,18 @@ where
                 }
                 crate::PatchSearchResult::CurrentPatchIsTheLastOne { current_patch } => {
                     // we are inside a patch, so we MUST read from it
-                    current = Some(current_patch);
+                    if current.is_none() {
+                        current = Some(current_patch);
+                    }
                 }
                 crate::PatchSearchResult::CurrentPatchIsFollowedBy {
                     current_patch,
                     next_patch,
                 } => {
                     // we are inside a patch, so we MUST read from it
-                    current = Some(current_patch);
+                    if current.is_none() {
+                        current = Some(current_patch);
+                    }
 
                     // but we must also take a look at where the next patch is
                     if let Some(p) = next {
