@@ -2,6 +2,10 @@
 name = "memoverlay"
 version = "0.1.0"
 edition = "2021"
+authors = ["Jan Starke <jan.starke@posteo.de>"]
+license = "GPL-3.0"
+description = "Puts a writable layer of bytes over some byte stream"
+repository = "https://github.com/janstarke/memoverlay"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
