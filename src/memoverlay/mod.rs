@@ -1,14 +1,12 @@
-use std::io::{Error, ErrorKind, Read, Result, Seek, SeekFrom, Write};
+use std::{
+    cmp::min,
+    io::{Error, ErrorKind, Read, Result, Seek, SeekFrom, Write},
+};
 
+mod display;
 mod read;
 mod seek;
 mod write;
-mod display;
-
-pub use read::*;
-pub use seek::*;
-pub use write::*;
-pub use display::*;
 
 use crate::{Patch, PatchLayer};
 
@@ -77,8 +75,7 @@ where
                 // which contains at least one byte
                 layer
                     .iter_patches()
-                    .rev()
-                    .next()
+                    .next_back()
                     .map(|patch| patch.last_byte_offset())
                     .unwrap()
             })
@@ -182,9 +179,13 @@ where
                 Ok(bytes)
             }
             None => {
+                #[allow(clippy::unused_io_amount)]
                 let bytes = match next {
                     Some(next_patch) => {
-                        let length: usize = (next_patch.begin() - self.pos).try_into().unwrap();
+                        let length: usize = min(
+                            buf.len(),
+                            (next_patch.begin() - self.pos).try_into().unwrap(),
+                        );
                         self.base.read(&mut buf[0..length])?
                     }
                     None => self.base.read(buf)?,
@@ -204,7 +205,7 @@ where
         let offset = self.pos - current_patch.begin();
         let bytes = match next_patch {
             Some(next_patch) => {
-                let length: usize = (next_patch.begin() - self.pos).try_into().unwrap();
+                let length: usize = min(buf.len(), (next_patch.begin() - self.pos).try_into().unwrap());
                 current_patch.read(offset, &mut buf[0..length])?
             }
             None => current_patch.read(offset, buf)?,
